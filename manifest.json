@@ -17,6 +17,7 @@
     ]
   },
   "manifest_version": 2,
+  "content_security_policy": "script-src 'self' https://push.groupme.com; object-src 'self'",
 
   // crbug.com/134315
   "web_accessible_resources": [

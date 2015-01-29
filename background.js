@@ -1,12 +1,3 @@
-// Copyright (c) 2011 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-/*
-  Displays a notification with the current time. Requires "notifications"
-  permission in the manifest file (or calling
-  "Notification.requestPermission" beforehand).
-*/
 function show(body) {
   var time = /(..)(:..)/.exec(new Date());     // The prettyprinted time.
   var hour = time[1] % 12 || 12;               // The prettyprinted hour.
@@ -17,32 +8,20 @@ function show(body) {
     body: body
   });
 }
-
-// Conditionally initialize the options.
-if (!localStorage.isInitialized) {
-  localStorage.isActivated = true;   // The display activation.
-  localStorage.frequency = 1;        // The display frequency, in minutes.
-  localStorage.isInitialized = true; // The option initialization.
-}
-
-// Test for notification support.
-if (window.Notification) {
-  // While activated, show notifications at the display frequency.
-
-
-  var client = new Faye.Client('https://push.groupme.com/faye');
-  var subscription = client.subscribe('/user/', function(message) {
-    show(message);
+chrome.storage.sync.get("token", function(items){
+  if (items.token){
+    setUpSocket(items.token);
+  } else {
+    openAuthTab();
+  }
 });
-}
-
-if (!localStorage.token){
+openAuthTab = function(){
   chrome.tabs.create({
     'url': chrome.extension.getURL('index.html')
   }, function(tab) {
 
   });
-}
+};
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.method == "setToken"){
     chrome.storage.sync.set({'token': request.value}, function() {
@@ -50,3 +29,40 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     });
   }
 });
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+  for (key in changes) {
+    if (key === "token"){
+      setUpSocket(changes[key].newValue);
+    }
+  }
+});
+getUserInfo = function(token, cb){
+  var request = new XMLHttpRequest();
+  request.open('GET', 'https://api.groupme.com/v3/users/me?token='+token, true);
+  request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
+      var resp = request.responseText;
+      cb(JSON.parse(resp).response);
+    }
+  };
+  request.send();
+};
+setUpSocket = function(token){
+  getUserInfo(token,function(user){
+    subscribe(user.id);
+  });
+  var client = new Faye.Client('https://push.groupme.com/faye');
+  client.addExtension({
+    outgoing: function(message, callback){
+      message.ext = message.ext || {};
+      message.ext.token = token;
+      message.ext.timestamp = Date.now()/1000 |0;
+      callback(message);
+    }
+  });
+  var subscribe = function(uid){
+    var subscription = client.subscribe('/user/'+uid, function(message) {
+        show(message);
+    });
+  };
+};
