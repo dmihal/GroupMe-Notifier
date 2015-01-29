@@ -54,6 +54,9 @@ setUpSocket = function(token){
   var client = new Faye.Client('https://push.groupme.com/faye');
   client.addExtension({
     outgoing: function(message, callback){
+      if (message.channel !== '/meta/subscribe'){
+        return callback(message);
+      }
       message.ext = message.ext || {};
       message.ext.access_token = token;
       message.ext.timestamp = Date.now()/1000 |0;
