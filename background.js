@@ -55,7 +55,7 @@ setUpSocket = function(token){
   client.addExtension({
     outgoing: function(message, callback){
       message.ext = message.ext || {};
-      message.ext.token = token;
+      message.ext.access_token = token;
       message.ext.timestamp = Date.now()/1000 |0;
       callback(message);
     }
