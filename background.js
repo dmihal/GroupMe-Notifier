@@ -1,11 +1,7 @@
-function show(body) {
-  var time = /(..)(:..)/.exec(new Date());     // The prettyprinted time.
-  var hour = time[1] % 12 || 12;               // The prettyprinted hour.
-  var period = time[1] < 12 ? 'a.m.' : 'p.m.'; // The period of the day.
-  if (!body) body = "sample body";
-  new Notification(hour + time[2] + ' ' + period, {
-    icon: '48.png',
-    body: body
+function show(msg) {
+  new Notification("group "+msg.subject.group_id, {
+    icon: msg.subject.avatar_url,
+    body: msg.subject.text
   });
 }
 chrome.storage.sync.get("token", function(items){
