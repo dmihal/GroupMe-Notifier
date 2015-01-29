@@ -29,8 +29,24 @@ if (!localStorage.isInitialized) {
 if (window.Notification) {
   // While activated, show notifications at the display frequency.
 
+
   var client = new Faye.Client('https://push.groupme.com/faye');
-  var subscription = client.subscribe('/meta/subscribe', function(message) {
+  var subscription = client.subscribe('/user/', function(message) {
     show(message);
 });
 }
+
+if (!localStorage.token){
+  chrome.tabs.create({
+    'url': chrome.extension.getURL('index.html')
+  }, function(tab) {
+
+  });
+}
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.method == "setToken"){
+    chrome.storage.sync.set({'token': request.value}, function() {
+      sendResponse({data: "Token set"});
+    });
+  }
+});

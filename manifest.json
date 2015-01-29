@@ -5,12 +5,18 @@
     "Shows off desktop notifications, which are \"toast\" windows that pop up on the desktop.",
   "icons": {"16": "16.png", "48": "48.png", "128": "128.png"},
   "permissions": [
-    "notifications"
+    "notifications",
+    "identity",
+    "storage"
   ],
   "options_page": "options.html",
-  "background": { "scripts": ["faye-browser.js", "background.js"] },
+  "background": {
+    "scripts": [
+      "faye-browser.js",
+      "background.js"
+    ]
+  },
   "manifest_version": 2,
-  "content_security_policy": "script-src 'self' https://push.groupme.com; object-src 'self'",
 
   // crbug.com/134315
   "web_accessible_resources": [
