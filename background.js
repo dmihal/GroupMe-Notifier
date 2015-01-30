@@ -1,5 +1,6 @@
 function show(msg) {
-  new Notification("group "+msg.subject.group_id, {
+  var group = Groups.find(msg.subject.group_id);
+  new Notification(group.name, {
     icon: msg.subject.avatar_url,
     body: msg.subject.text
   });
@@ -47,6 +48,7 @@ setUpSocket = function(token){
   getUserInfo(token,function(user){
     subscribe(user.id);
   });
+  Groups.load(token);
   var client = new Faye.Client('https://push.groupme.com/faye');
   client.addExtension({
     outgoing: function(message, callback){
