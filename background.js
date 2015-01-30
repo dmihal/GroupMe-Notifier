@@ -1,9 +1,14 @@
 function show(msg) {
   var group = Groups.find(msg.subject.group_id);
-  new Notification(group.name, {
+  var notification = new Notification(group.name, {
     icon: msg.subject.avatar_url,
     body: msg.subject.text
   });
+  notification.onclick = function(){
+    chrome.tabs.create({
+        'url': "https://app.groupme.com/chats/" + group.id
+    }, function(tab) {});
+  };
 }
 chrome.storage.sync.get("token", function(items){
   if (items.token){
