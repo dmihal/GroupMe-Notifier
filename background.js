@@ -4,7 +4,7 @@ function show(msg) {
     id: group.id,
     name: group.name,
     url: "https://app.groupme.com/chats/" + group.id,
-    image: group.image_url
+    image: group.image_url  || "http://i.groupme.com/300x300.png.e8ec5793a332457096bc9707ffc9ac37"
   },{
     name: msg.subject.name,
     image: msg.subject.avatar_url,

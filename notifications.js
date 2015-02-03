@@ -14,7 +14,8 @@ Notifications = (function(){
   _notification.prototype.render = function(){
     var self = this;
     var options = {
-      title: this.title
+      title: this.title,
+      message: ""
     };
     if (this.messages.length > 1){
       var items = [];

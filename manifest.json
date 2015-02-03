@@ -7,7 +7,8 @@
   "permissions": [
     "notifications",
     "identity",
-    "storage"
+    "storage",
+    "http://*.groupme.com/"
   ],
   "options_page": "options.html",
   "background": {
