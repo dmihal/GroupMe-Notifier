@@ -1,14 +1,15 @@
 function show(msg) {
   var group = Groups.find(msg.subject.group_id);
-  var notification = new Notification(group.name, {
-    icon: msg.subject.avatar_url,
-    body: msg.subject.text
+  Notifications.addNotification({
+    id: group.id,
+    name: group.name,
+    url: "https://app.groupme.com/chats/" + group.id,
+    image: group.image_url
+  },{
+    name: msg.subject.name,
+    image: msg.subject.avatar_url,
+    text: msg.subject.text
   });
-  notification.onclick = function(){
-    chrome.tabs.create({
-        'url': "https://app.groupme.com/chats/" + group.id
-    }, function(tab) {});
-  };
 }
 chrome.storage.sync.get("token", function(items){
   if (items.token){

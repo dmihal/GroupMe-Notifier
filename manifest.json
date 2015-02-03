@@ -14,6 +14,7 @@
     "scripts": [
       "faye-browser.js",
       "groups.js",
+      "notifications.js",
       "background.js"
     ]
   },
