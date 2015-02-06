@@ -14,6 +14,7 @@
   "background": {
     "scripts": [
       "faye-browser.js",
+      "authentication.js",
       "groups.js",
       "notifications.js",
       "background.js"

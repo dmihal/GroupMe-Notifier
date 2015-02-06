@@ -15,16 +15,9 @@ chrome.storage.sync.get("token", function(items){
   if (items.token){
     setUpSocket(items.token);
   } else {
-    openAuthTab();
+    Auth.getToken(false);
   }
 });
-openAuthTab = function(){
-  chrome.tabs.create({
-    'url': chrome.extension.getURL('index.html')
-  }, function(tab) {
-
-  });
-};
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.method == "setToken"){
     chrome.storage.sync.set({'token': request.value}, function() {
