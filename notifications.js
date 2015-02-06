@@ -1,12 +1,32 @@
 Notifications = (function(){
   var notifications = {};
 
+  var findNotificationById = function(id){
+    for(var groupId in notifications){
+      if (notifications[groupId].id === id){
+        return notifications[groupId];
+      }
+    }
+    return null;
+  }
+
+  var click = function(id){
+    var notification = findNotificationById(id);
+    if (notification){
+      chrome.tabs.create({
+        url: "https://app.groupme.com/chats/" + notification.groupId
+      }, function(tab) {});
+    }
+  };
+  chrome.notifications.onClicked.addListener(click);
+
   function _notification(group){
     this.id = "";
     this.groupId = group.id || "";
     this.messages = [];
     this.title = group.name || "GroupMe";
     this.image = group.image;
+    this.url = group.url;
   }
   _notification.prototype.addMessage = function(msg){
     this.messages.push(msg);
