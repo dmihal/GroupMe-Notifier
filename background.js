@@ -15,7 +15,7 @@ chrome.storage.sync.get("token", function(items){
   if (items.token){
     setUpSocket(items.token);
   } else {
-    Auth.getToken(false);
+    Auth.getToken();
   }
 });
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
