@@ -1,8 +1,8 @@
 {
-  "name": "Notification Demo",
-  "version": "1.1",
+  "name": "GroupMe Notifications",
+  "version": "0.1",
   "description":
-    "Shows off desktop notifications, which are \"toast\" windows that pop up on the desktop.",
+    "Show desktop notifications for GroupMe messages",
   "icons": {"16": "16.png", "48": "48.png", "128": "128.png"},
   "permissions": [
     "notifications",
