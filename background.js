@@ -25,10 +25,18 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     });
   }
 });
+
+var client = null;
 chrome.storage.onChanged.addListener(function(changes, namespace) {
   for (key in changes) {
     if (key === "token"){
-      setUpSocket(changes[key].newValue);
+      if (changes[key].newValue){
+        client = setUpSocket(changes[key].newValue);
+      } else {
+        // The user logged out
+        client.disconnect();
+        client = null;
+      }
     }
   }
 });
@@ -67,4 +75,5 @@ setUpSocket = function(token){
       }
     });
   };
+  return client;
 };
