@@ -20,6 +20,7 @@
       "background.js"
     ]
   },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsqvYYD1koPDsJbaFg2XM6sRsAv+jaC0+wCb7tbOf8CEF26GapiZv9wXSbNYICRGljySMZGU1g3eQz+TsUWafsz0/I08rHCAPI2R5VybTWRzCGPuZPo7oIUogcToQ/su7WXmCi5rtXNJvlazbAtIKe5HcZlkUIKVuZyRc0QwYw6Z22DtkzJlzg7SG7F56hg1R3+uvZVPl4mzKV2NM+mNtPrnp8LSOwG+A1Wg71ahaF/Y3b2jmFro0Y6rySCubeDaNyZCBe1DkpKom9+pop12GSiyn/5v7ZPqM4tkJ2w2/4EzrUYflhSYV1V2b/vunulBAQIeeKTM0ipwlzu1TOWXt0wIDAQAB",
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' https://push.groupme.com; object-src 'self'",
 
