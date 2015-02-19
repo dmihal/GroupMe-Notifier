@@ -81,7 +81,8 @@ setUpSocket = function(token){
   });
   var subscribe = function(uid){
     var subscription = client.subscribe('/user/'+uid, function(message) {
-      if (message.type === "line.create"){
+      if (message.type === "line.create" &&
+          message.subject.sender_id !== uid){
         show(message);
       }
     });
