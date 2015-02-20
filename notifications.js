@@ -13,9 +13,24 @@ Notifications = (function(){
   var click = function(id){
     var notification = findNotificationById(id);
     if (notification){
-      chrome.tabs.create({
-        url: "https://app.groupme.com/chats/" + notification.groupId
-      }, function(tab) {});
+      var newURL = "https://app.groupme.com/chats/" + notification.groupId;
+      chrome.tabs.query({"url" : "https://app.groupme.com/*"}, function(tabs){
+        if (tabs.length > 0){
+          var matchedTab = tabs[0];
+          chrome.windows.update(matchedTab.windowId, { 
+            "focused" : true
+          });
+		  chrome.tabs.update(matchedTab.id, {
+            "active" : true, "url" : newURL
+			// changing url reloads the page (which may not be the best solution)
+          });
+        }
+        else {
+          chrome.tabs.create({
+            url : newURL
+          }, function(tab){});
+        } 
+      });
     }
   };
   chrome.notifications.onClicked.addListener(click);
@@ -83,6 +98,19 @@ Notifications = (function(){
       notification.addMessage(message);
       notification.render();
       notifications[group.id] = notification;
+    },
+    showSimpleNotification: function(msg){
+      var options = {
+        type: 'basic',
+        title: msg.title,
+        message: msg.text,
+        iconUrl: msg.image || chrome.extension.getURL("128.png")
+      };
+      chrome.notifications.create("", options, function(id){
+        setTimeout(function(){
+          chrome.notifications.clear(id, function(){});
+        }, (options.timeout || 5) * 1000);
+      });
     }
   };
 })();

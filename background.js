@@ -36,6 +36,11 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
         // The user logged out
         client.disconnect();
         client = null;
+
+        Notifications.showSimpleNotification({
+          title: "Logged Out",
+          text: "You have logged out of GroupMe"
+        });
       }
     }
   }
@@ -57,6 +62,12 @@ setUpSocket = function(token){
   });
   Groups.load(token);
   var client = new Faye.Client('https://push.groupme.com/faye');
+
+  Notifications.showSimpleNotification({
+    title: "Logged In",
+    text: "You have successfully logged in to GroupMe"
+  });
+
   client.addExtension({
     outgoing: function(message, callback){
       if (message.channel !== '/meta/subscribe'){
@@ -70,7 +81,8 @@ setUpSocket = function(token){
   });
   var subscribe = function(uid){
     var subscription = client.subscribe('/user/'+uid, function(message) {
-      if (message.type === "line.create"){
+      if (message.type === "line.create" &&
+          message.subject.sender_id !== uid){
         show(message);
       }
     });
