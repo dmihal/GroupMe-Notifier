@@ -98,6 +98,19 @@ Notifications = (function(){
       notification.addMessage(message);
       notification.render();
       notifications[group.id] = notification;
+    },
+    showSimpleNotification: function(msg){
+      var options = {
+        type: 'basic',
+        title: msg.title,
+        message: msg.text,
+        iconUrl: msg.image || chrome.extension.getURL("128.png")
+      };
+      chrome.notifications.create("", options, function(id){
+        setTimeout(function(){
+          chrome.notifications.clear(id, function(){});
+        }, (options.timeout || 5) * 1000);
+      });
     }
   };
 })();
