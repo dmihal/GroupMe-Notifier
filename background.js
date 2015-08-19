@@ -63,9 +63,13 @@ setUpSocket = function(token){
   Groups.load(token);
   var client = new Faye.Client('https://push.groupme.com/faye');
 
-  Notifications.showSimpleNotification({
-    title: "Logged In",
-    text: "You have successfully logged in to GroupMe"
+  chrome.storage.sync.get("hide-auth-notif", function(result){
+    if (!result['hide-auth-notif']){
+      Notifications.showSimpleNotification({
+        title: "Logged In",
+        text: "You have successfully logged in to GroupMe"
+      });
+    }
   });
 
   client.addExtension({

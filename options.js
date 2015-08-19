@@ -18,3 +18,10 @@ document.querySelector("#loggedin button").addEventListener('click', function(){
 document.querySelector("#loggedout button").addEventListener('click', function(){
   Auth.getToken();
 });
+
+chrome.storage.sync.get("hide-auth-notif", function(result){
+  document.getElementById("displaynotification").checked = !result.hide-auth-notif;
+});
+document.querySelector("#loggedin button").addEventListener('change', function(){
+  chrome.storage.sync.set({'hide-auth-notif': !this.checked}, function(){});
+});
