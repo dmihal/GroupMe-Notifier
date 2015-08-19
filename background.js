@@ -83,7 +83,10 @@ setUpSocket = function(token){
     var subscription = client.subscribe('/user/'+uid, function(message) {
       if (message.type === "line.create" &&
           message.subject.sender_id !== uid){
-        show(message);
+        var group = Groups.find(message.subject.group_id);
+        if (!group.isMuted(uid)){
+          show(message);
+        }
       }
     });
   };
